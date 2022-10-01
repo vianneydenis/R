@@ -1,0 +1,29 @@
+---
+title: "Practice 2.2 rairuoho"
+output: html_document
+date: "2022-10-01"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## My homework for practice 2.2
+
+```{r rairuoho}
+library(tidyr)
+library(dplyr)
+rairuoho<-read.table("Data/rairuoho.txt",TRUE,"\t", ".")
+rairuoho$treatment<-ifelse(rairuoho$treatment=='nutrient','enriched','water')
+rairuoho$row<-NULL
+rairuoho$column<-NULL
+rairuoho_short<-rairuoho%>%pivot_longer(day3:day8,names_to = "level", values_to= "length")
+rairuoho_short$spatial_coordinates<-paste(rairuoho_short$spatial1, rairuoho$spatial2, sep="_")
+rairuoho_short$spatial1<-NULL
+rairuoho_short$spatial2<-NULL
+print(rairuoho_short,n=nrow(rairuoho_short))
+```
+
+
+
+
