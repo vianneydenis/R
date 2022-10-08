@@ -1,0 +1,41 @@
+---
+title: "Practice 3.2 by Shin M. Jean (f10632016)"
+output: html_document
+date: "2022-10-08"
+---
+
+## **Bubbletea Diet**
+```{r, echo=FALSE}
+Subject<- c("Subject_1","Subject_2","Subject_3","Subject_4","Subject_5")
+Before_diet<-c(104,95,87,77,112)
+After_diet<-c(96,91,81,75,118)
+bbtdiet<-data.frame(Subject,Before_diet,After_diet)
+bbtdiet
+
+time_of_measurement<-c("Before_diet","After_diet")
+tom.fact<-as.factor(time_of_measurement)
+weightloss<- Before_diet-After_diet/Before_diet*100
+
+```
+## **Weightloss (in %) from the Bubbletea Diet**
+
+```{r, echo= FALSE}
+time_of_measurement<-c("Before_diet","After_diet")
+tom.fact<-as.factor(time_of_measurement)
+
+weightloss<- Before_diet-After_diet/Before_diet*100
+
+BUBBLE_DIET<-data.frame(Subject, Before_diet, After_diet)
+BUBBLE_DT<-list(Subject=Subject,Before_diet=Before_diet,After_diet=After_diet)
+
+subject<-rownames(bbtdiet)
+weight_loss<-weightloss
+c<-data.frame(subject, weight_loss)
+w8loss<-list(subject=subject,weight_loss=weight_loss,c=c)
+WEIGHT_LOSS<-w8loss
+
+MESSAGE<-c("This would be more enjoyable if the data were true. :D Nonetheless, this is such a nice practice!")
+
+BUBBLEDIET<-list(BUBBLE_DIET=BUBBLE_DIET, WEIGHT_LOSS=WEIGHT_LOSS, MESSAGE=MESSAGE)
+BUBBLEDIET
+```
