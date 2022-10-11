@@ -5,7 +5,7 @@ date: "2022-10-08"
 ---
 
 ## **Bubbletea Diet**
-```{r, echo=FALSE}
+```{r, echo=TRUE}
 Subject<- c("Subject_1","Subject_2","Subject_3","Subject_4","Subject_5")
 Before_diet<-c(104,95,87,77,112)
 After_diet<-c(96,91,81,75,118)
@@ -19,7 +19,7 @@ weightloss<- Before_diet-After_diet/Before_diet*100
 ```
 ## **Weightloss (in %) from the Bubbletea Diet**
 
-```{r, echo= FALSE}
+```{r, echo= TRUE}
 time_of_measurement<-c("Before_diet","After_diet")
 tom.fact<-as.factor(time_of_measurement)
 
