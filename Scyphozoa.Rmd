@@ -1,0 +1,243 @@
+---
+title: "The True Jellyfish (Scyphozoa): Do they matter?"
+author: "Shin M. Jean F10632016"
+date: "December 31, 2022"
+output: html_document
+---
+### Introduction
+
+  Cnidaria can come in many shapes and colors. The true jellyfish usually possesses two life-history: medusa and polyps. The medusa is usually observed in warmer temperatures, whereas the polyp form which is more conspicuous, live in deep-waters (Kramp, 1961). Most of the large and colorful jellyfish belong to class Scyphozoa, wherein these organisms can range from 2 to 40 cm in diameter and is found many bodies of deep water except for freshwater. 
+	These organisms mostly feed on small fish and many other crustaceans in their medusae form in which their stingers help them capture food. Scyphozoans do not have any hard body part such as the head, or a specialized organ for excreting (Cartwright et al., 2007). Some species of the Scyphozoa such as the Aurelia aurita can cause some human inconvenience, most especially in the fishing industry as they can destroy net pens and cause fish gill disorders (Purcell et al., 2013). These jellyfish may also cause some concern on human health as their stingers contain venom that may end up being fatal if not treated properly (Remigante et al., 2018). On the other hand, some species from the order Rhizostomeae can be used for food (Cruz-Rivera & El-Regal, 2016). In this short paper, I first aim to show a simple geographical map of each species according to the data collected by Edgar & Stuart-Smith (2014) from 2008 to 2022, and second is to briefly talk about how these jellyfish affect human day to day life.
+
+
+### Materials and Methods
+#### **1. Data** ####
+
+Data was downloaded from a public open access database (IMOS), and randomly selected the area and class on the website's interactive map.
+```{r message=FALSE, include=FALSE, echo=FALSE}
+library(readxl)
+library(tidyr)
+library(dplyr)
+read_excel("/Users/shinjean/Documents/ClassR/IMOS_1.xlsx", sheet = "IMOS1")
+IMOS1<-read_excel("/Users/shinjean/Documents/ClassR/IMOS_1.xlsx", sheet ="IMOS1")
+IMOS1<- subset.data.frame (IMOS1, select = -c (FID, ecoregion, site_name, reporting_name, visibility, hour, method, program, survey_latitude, survey_longitude, block, phylum, class, biomass, geom ))
+IMOS1
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo= FALSE}
+library(reactable)
+reactable(IMOS1,
+          columns= list (survey_id=colDef(sortable=FALSE)),
+          showSortable = TRUE,
+          theme= reactableTheme(
+            headerStyle = list(
+              "&:hover[aria-sort]" = list(background = "hsl(0, 0%, 96%)"),
+              "&[aria-sort='ascending'], &[aria-sort='descending']" = list(background = "hsl(0, 0%, 96%)"),
+              borderColor = "#555"
+            )))
+```
+Table 1. Data extracted from an open-access live database (Edgar & Stuart-Smith,2014; IMOS). 
+
+``` {r, echo=FALSE, message=FALSE}
+
+library(reactable)
+ausclima1<- read_excel ('/Users/shinjean/Documents/ClassR/derwent_-43.25_147.25.xlsx')
+ausclima1<- subset.data.frame (ausclima1, select = -c (max_temp_source, min_temp_source, metadata))
+colnames (ausclima1) [which(names(ausclima1) == "YYYY-MM-DD")] <- "date"
+class(ausclima1$date)="as-time"
+reactable(ausclima1,
+          columns= list (date=colDef(sortable=FALSE)),
+          showSortable = TRUE,
+          theme= reactableTheme(
+            headerStyle = list(
+              "&:hover[aria-sort]" = list(background = "hsl(0, 0%, 96%)"),
+              "&[aria-sort='ascending'], &[aria-sort='descending']" = list(background = "hsl(0, 0%, 96%)"),
+              borderColor = "#555"
+            )))
+```
+Table 2. Data extracted from an open access live database for Derwent, TAS (SILO)
+
+``` {r, echo=FALSE, message=FALSE}
+
+library(reactable)
+ausclima2<- read_excel ('/Users/shinjean/Documents/ClassR/perthmet.xlsx')
+ausclima2<- subset.data.frame (ausclima2, select = -c (max_temp_source, min_temp_source, metadata))
+colnames (ausclima2) [which(names(ausclima2) == "YYYY-MM-DD")] <- "date"
+class(ausclima2$date)="as-time"
+reactable(ausclima2,
+          columns= list (date=colDef(sortable=FALSE)),
+          showSortable = TRUE,
+          theme= reactableTheme(
+            headerStyle = list(
+              "&:hover[aria-sort]" = list(background = "hsl(0, 0%, 96%)"),
+              "&[aria-sort='ascending'], &[aria-sort='descending']" = list(background = "hsl(0, 0%, 96%)"),
+              borderColor = "#555"
+            )))
+```
+Table 3. Data extracted from an open access live database for Perth Metro, AUS (SILO)
+
+``` {r, echo=FALSE, message=FALSE}
+library(reactable)
+ausclima3<- read_excel ('/Users/shinjean/Documents/ClassR/portphil.xlsx')
+ausclima3<- subset.data.frame (ausclima3, select = -c (max_temp_source, min_temp_source, metadata))
+colnames (ausclima3) [which(names(ausclima3) == "YYYY-MM-DD")] <- "date"
+class(ausclima3$date)="as-time"
+reactable(ausclima3,
+          columns= list (date=colDef(sortable=FALSE)),
+          showSortable = TRUE,
+          theme= reactableTheme(
+            headerStyle = list(
+              "&:hover[aria-sort]" = list(background = "hsl(0, 0%, 96%)"),
+              "&[aria-sort='ascending'], &[aria-sort='descending']" = list(background = "hsl(0, 0%, 96%)"),
+              borderColor = "#555"
+            )))
+```
+
+Table 3. Data extracted from an open access live database for Port Phillip Bay, AUS (SILO)
+
+
+#### **2. Size class and areas where different species are found and surveyed** ####
+
+``` {r, echo=FALSE}
+library(dplyr)
+library(ggplot2)
+p1<- ggplot (data=IMOS1) + geom_jitter(aes (x=size_class, y=species_name), color='darkgreen', pch= 21 ) + 
+  labs (title= "Size class of different Scyphozoan species",
+        caption="Data from IMOS",
+        tag= "Fig. 1",
+        x= "Size class (cm)",
+        y="Species name")
+p1+ theme_bw()
+
+p2<- ggplot(data = IMOS1, aes(x=area, y= species_name)) + geom_jitter(color='purple', pch= 21)+
+  labs(colour="Size Class",
+       x= "Area",
+       y= "Species name",
+       tag= "Fig. 2",
+       title = "Species in Different Areas of the Australian Continent",
+       caption= "Data from IMOS"
+      ) 
+p2 + theme_bw()
+```
+``` {r, echo= FALSE}
+table(IMOS1$area, IMOS1$species_name)
+```
+Table 3. Number of species surveyed in each area
+```{R, echo=FALSE}
+
+p3<- ggplot(data=IMOS1, aes(x= survey_date, y= species_name)) + geom_jitter(color='blue', pch=21)+
+  labs (x="Survey Date",
+        y="Species Name",
+        title= "Species Survey Dates",
+        caption= "Data from IMOS",
+        tag= "Fig. 3")
+p3 + theme_bw()
+
+```
+
+#### **4. Maximum and minimum temperatures**
+#### **Derwent, TAS**
+``` {r, message= FALSE, echo=FALSE}
+library(readr)
+library(lubridate)
+ausclima1<- read_excel ('/Users/shinjean/Documents/ClassR/derwent_-43.25_147.25.xlsx') 
+plot(max_temp ~ min_temp, data = ausclima1,
+     xlab = 'Maximum Temp (C)', 
+     ylab = 'Minimum Temp (C)',
+     main = 'Max & min temp recorded from 2008 to 2021 in Derwent, TAS',
+     pch = 20, cex=2, 
+     col = scales::alpha(colour = 'blue', 0.2))
+```
+
+#### **Perth Metro, AUS**
+```{r, message=FALSE, echo=FALSE}
+ausclima2<- read_excel ("/Users/shinjean/Documents/ClassR/perthmet.xlsx") 
+ausclima2<- subset.data.frame (ausclima2, select = -c (max_temp_source, min_temp_source, metadata))
+plot(max_temp ~ min_temp, data = ausclima2,
+     xlab = 'Maximum Temp (C)', 
+     ylab = 'Minimum Temp (C)',
+     main = 'Min & min temp recorded from 2008 to 2021 in Perth Metro, AUS',
+     pch = 20, cex=2, 
+     col = scales::alpha(colour = 'pink', 0.2))
+
+```
+
+#### **Port Phillip Bay, AUS**
+```{r, MESSAGE = FALSE, echo=FALSE}
+ausclima3<- read_excel ("/Users/shinjean/Documents/ClassR/portphil.xlsx") 
+ausclima3<- subset.data.frame (ausclima3, select = -c (max_temp_source, min_temp_source, metadata))
+plot(max_temp ~ min_temp, data = ausclima3,
+     xlab = 'Maximum Temp (C)', 
+     ylab = 'Minimum Temp (C)',
+     main = 'Min & min temp recorded from 2008 to 2021 in Port Phillip Bay, AUS',
+     pch = 20, cex=2, 
+     col = scales::alpha(colour = 'orange', 0.2))
+```
+
+
+#### **3. Plotting and Mapping Software**
+I used R studio (ver 22.10.0 for mac) with packages (readxl, tidyr, dplyr, reactable, ggplot2, leaflet) in creating tables, plots, and the interactive map.
+
+### Results
+#### **1. Interactive map of different Scyphozoan species and their survey locations**
+
+
+```{r, echo=FALSE}
+library(leaflet)
+species <- leaflet(IMOS1) %>% addTiles() %>% addMarkers(~longitude, ~latitude, popup = IMOS1$species_name)
+spcies<-colorFactor("viridis", domain=IMOS1$species_name)
+species <- leaflet(IMOS1) %>% addTiles() %>% 
+  addCircleMarkers(~longitude, ~latitude, 
+                   fillColor = ~spcies(species_name), 
+                   popup = IMOS1$species_name,
+                   fillOpacity = 0.8,
+                   color = "white",
+                   weight = 1,
+                   radius = 5) %>%
+  addScaleBar(species, position = "bottomright")
+
+species
+```
+Map 1. Map of Australia with interactive popups for species name.
+
+This is the interactive map created using the leaflet package, where popups show the species name surveyed from each location. Different species of Scyphozoa are scattered around the coastlines of Australia, but _Aurelia aurita_ is the most commonly observed species all over the continent, with _Catostylus mosaicus_ following with 14 observations. Most of the observations for _A. aurita_ were from Tasmania, while _C. mosaicus_ were observed in Victoria, AUS.
+
+#### **2. Survey dates and size class of Scyphozoan species**
+``` {r, echo= FALSE, message=FALSE}
+ggplot(IMOS1, aes(x=survey_date, y=size_class))+labs(x=" Survey Date",y="Size class")+geom_point() +stat_smooth(method="lm",col="red")
+```
+
+From what we can see here, most species were observed around 2008 and 2009, and around 2019. And while jellyfish observed around 2008 were more dense, their sizes ranged from around 2cm until 35cm, while the ones observed a decade later were larger in size and was loosely distributed as well. Species like _Aurelia aurita_, _Cyanea annaskala_, _Cyanea capillata_, and _Phyllorhiza punctata_ sizes ranged from 2cm until 25cm while _Catostylus mosaicus_ showed bigger sizes, ranging from 35cm to around 40cm.
+
+#### **3. Jellyfish, temperature, and humans**
+
+According to Purcell et al., 2013, these organisms can disrupt human livelihood especially in the fishing industry, destroying net pens and cause fish gill disorders. Australia's climate usually ranges from hot-dry or hot-humid summer to warm winters (SILO). True jellyfish possess tentacles with stingers that usually contains venom, and may cause serious human health issues if not treated properly. The Australian climate could play a huge factor in the frequent appearance of Rhizostome jellyfish (Kramp, 1961). As people go to the coastlines or beaches for leisure, the appearance of Scyphozoa in the summer will be more apparent.a
+
+
+### Conclusion
+
+The fishing industry is indeed essential in human life, the ecosystem, and the overall environment. Australia, being in the southern hemisphere of the world, has been known for the various types of species living and growing in the continent. Over the past ten years, an incline of the growth and development of jellyfish, namely, Aurelia aurita_, _Cyanea annaskala_, _Cyanea capillata_, and _Phyllorhiza punctata_, have been drastically evident. An estimate of two to five cm in growth has been measured from this. Along with this apparent growth, the heat within the region has been rising as well. With a temperature of almost 28 degrees Celcius, the increase of the jellyfish population can be correlated in this study.  
+
+### Discussion
+
+The data presented is limited for this study, the true jellyfish, Scyphozoa. The data entails the size, location, and date for the population. If the survey was to be done on a monthly basis, the data presented would be more reliable and dependable. With the rise of temperature, there would be a correlated growth of the species. On the other hand, with the rise of temperature, there is no apparent survey that discusses the growth of the jellyfish. The growth of such species would take at most 5 years for data to be reliable and sufficient. Furthermore, for human safety, learning about such species would be of relevance. When children and adult are in vacation or enjoying their time, danger can always be around the corner. For one to understand more about the species and how to treat its sting, further studies should be conducted. Human safety is always one's top priority. 
+
+### References
+
+Cartwright, P., Halgedahl, S. L., Hendricks, J. R., Jarrard, R. D., Marques, A. C., Collins, A. G., & Lieberman, B. S. (2007). Exceptionally Preserved Jellyfishes from the Middle Cambrian. PLoS One, 2(10), e1121. https://doi.org/10.1371/journal.pone.0001121 
+
+Cruz-Rivera, E., & El-Regal, M. A. (2016). A bloom of an edible scyphozoan jellyfish in the Red Sea. Marine Biodiversity, 46(2), 515-519. https://doi.org/10.1007/s12526-015-0381-1 
+
+Kramp, P. L. (1961). Synopsis of the Medusae of the World. Journal of the Marine Biological Association of the United Kingdom, 40, 7-382. https://doi.org/10.1017/S0025315400007347 
+
+Purcell, J. E., Baxter, E. J., & Fuentes, V. L. (2013). 13 - Jellyfish as products and problems of aquaculture. In G. Allan & G. Burnell (Eds.), Advances in Aquaculture Hatchery Technology (pp. 404-430). Woodhead Publishing. https://doi.org/https://doi.org/10.1533/9780857097460.2.404 
+
+SILO,Australian climate data from 1889 to yesterday, Queensland Government,
+https://www.longpaddock.qld.gov.au/silo/point-data/
+
+Remigante, A., Costa, R., Morabito, R., La Spada, G., Marino, A., & Dossena, S. (2018). Impact of Scyphozoan Venoms on Human Health and Current First Aid Options for Stings. Toxins, 10(4), 133. https://doi.org/10.3390/toxins10040133 
+
+
+
+
